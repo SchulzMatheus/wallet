@@ -1,16 +1,17 @@
-import { SAVE_EMAIL } from '../actions';
+import { ADD_PERSONAL_INFO } from '../actions';
 
-const initialState = {
-  email: '', // string que armazena o email da pessoa usuária
+const INITIAL_STATE = {
+  email: '',
 };
 
-const user = (state = initialState, action) => {
-  switch (action.type) {
-  case SAVE_EMAIL:
+const user = (state = INITIAL_STATE, { type, payload }) => {
+  switch (type) {
+  case ADD_PERSONAL_INFO: {
     return {
       ...state,
-      email: action.payload,
+      ...payload,
     };
+  }
   default: return state;
   }
 };
