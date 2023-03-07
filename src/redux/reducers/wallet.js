@@ -7,19 +7,20 @@ const STATE_OPEN = {
   valueCurrency: 0,
 };
 
-const wallet = (state = STATE_OPEN, { type, payload }) => {
-  switch (type) {
+const wallet = (state = STATE_OPEN, action) => {
+  switch (action.type) {
   case REQUEST_COIN:
     return {
       ...state,
-      currencies: payload,
+      currencies: action.payload,
     };
   case SAVE_EXPENSE:
     return {
       ...state,
-      expenses: [...state.expenses, payload],
-      total: state.total + (payload.value
-          * +payload.exchangeRates[payload.currency].ask),
+      expenses: [...state.expenses, action.payload],
+      // expenses: action.payload,
+      total: state.total + (action.payload.value
+          * +action.payload.exchangeRates[action.payload.currency].ask),
     };
 
   case UPDATE_EXPENSE:
@@ -32,7 +33,7 @@ const wallet = (state = STATE_OPEN, { type, payload }) => {
   case DELETE_TABLE:
     return {
       ...state,
-      expenses: payload,
+      expenses: action.payload,
     };
 
   default: return state;

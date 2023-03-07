@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchCoin, fetchByCoin, saveExpense } from '../redux/actions/index';
+import { apiComplete, fetchMoeda, saveExpense } from '../redux/actions/index';
 
 class WalletForm extends Component {
   state = {
@@ -15,7 +15,7 @@ class WalletForm extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchByCoin());
+    dispatch(fetchMoeda());
   }
 
   handleChange = ({ target }) => {
@@ -23,11 +23,11 @@ class WalletForm extends Component {
     this.setState({ [name]: value });
   };
 
-  coins = () => {
+  optionsCoin = () => {
     const { currency } = this.props;
-    const optionsMap = currency.map((e) => (
-      <option key={ e } value={ e }>
-        {e}
+    const optionsMap = currency.map((moeda) => (
+      <option key={ moeda } value={ moeda }>
+        {moeda}
       </option>));
     return optionsMap;
   };
@@ -36,7 +36,7 @@ class WalletForm extends Component {
     event.preventDefault();
     const { id, value, description, currency, method, tag } = this.state;
     const { dispatch } = this.props;
-    const exchangeRates = await dispatch(fetchCoin());
+    const exchangeRates = await dispatch(apiComplete());
     const expensesKey = {
       value,
       description,
@@ -47,6 +47,7 @@ class WalletForm extends Component {
       id,
     };
     dispatch(saveExpense(expensesKey));
+
     this.setState({
       value: '',
       description: '',
@@ -62,6 +63,7 @@ class WalletForm extends Component {
     return (
       <form onSubmit={ this.handleSubmit }>
         <div>
+          {/* WalletForm */}
           <label htmlFor="value-input">
             Valor
             <input
@@ -95,7 +97,7 @@ class WalletForm extends Component {
               value={ currency }
               onChange={ this.handleChange }
             >
-              {this.coins()}
+              {this.optionsCoin()}
             </select>
           </label>
 

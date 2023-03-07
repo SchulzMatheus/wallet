@@ -3,33 +3,37 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addPersonal } from '../redux/actions';
 
-const MAX_PASSWORD_SIZE = 6;
 class Login extends React.Component {
   state = {
     email: '',
     password: '',
+    validButton: false,
   };
 
   handleChange = ({ target }) => {
     const { name, value } = target;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, () => this.validationButton());
   };
 
-  btnDisabled = () => {
+  validationButton = () => {
     const { email, password } = this.state;
-    return password.length < MAX_PASSWORD_SIZE
-    || !email.match(/\S+@\S+\.\S+/);
+    const lenghtPassword = 6;
+    const validationEmail = email.includes('@') && email.includes('.com');
+    this.setState({
+      validButton: password.length >= lenghtPassword && validationEmail,
+    });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
     const { dispatch, history } = this.props;
+    // console.log(dispatch);
     dispatch(addPersonal(this.state));
     history.push('/carteira');
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, validButton } = this.state;
     return (
       <form
         onSubmit={ this.handleSubmit }
@@ -48,6 +52,8 @@ class Login extends React.Component {
               value={ email }
               data-testid="email-input"
               id="email"
+              placeholder="Digite seu email"
+              // required
             />
           </label>
 
@@ -61,11 +67,12 @@ class Login extends React.Component {
               value={ password }
               data-testid="password-input"
               id="password"
+              placeholder="Digite sua senha"
             />
           </label>
 
           <button
-            disabled={ this.btnDisabled() }
+            disabled={ !validButton }
             type="submit"
             label="Entrar"
           >

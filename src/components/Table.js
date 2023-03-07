@@ -16,7 +16,7 @@ class Table extends Component {
       const { id, value, description, method, tag, currency, exchangeRates } = index;
       const valueConverted = +exchangeRates[currency].ask;
       const valor = +value;
-      const valorTotalConverted = valueConverted * valor;
+      const finishValue = valueConverted * valor;
 
       return (
         <tr key={ id }>
@@ -26,7 +26,7 @@ class Table extends Component {
           <td>{valor.toFixed(2)}</td>
           <td>{valueConverted.toFixed(2)}</td>
           <td>{exchangeRates[currency].name}</td>
-          <td>{valorTotalConverted.toFixed(2)}</td>
+          <td>{finishValue.toFixed(2)}</td>
           <td>REAL</td>
           <td>
             <button type="button" data-testid="edit-btn">Editar</button>

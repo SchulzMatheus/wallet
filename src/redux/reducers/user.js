@@ -1,15 +1,16 @@
 import { ADD_PERSONAL_INFO } from '../actions';
 
+// Esse reducer será responsável por tratar as informações da pessoa usuária
 const INITIAL_STATE = {
   email: '',
 };
 
-const user = (state = INITIAL_STATE, { type, payload }) => {
-  switch (type) {
+const user = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
   case ADD_PERSONAL_INFO: {
     return {
       ...state,
-      ...payload,
+      ...action.payload,
     };
   }
   default: return state;
